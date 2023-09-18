@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="text-center my-5">회원가입 선택</h2>
+<div class="container d-flex">
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <div class="card">
+                <img src="/static/img/01.png" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title text-center">환자용 회원가입</h5>
+                  <p class="card-text">환자용 회원가입 페이지 입니다. 제품 인증코드가 필요하니 이점 유의 해주시기 바랍니다.</p>
+                  <div class="d-grid gap-2 mx-auto">
+                     <a href={% url 'common:signup' %} class="btn btn-outline-secondary" role="button">환자용 회원가입</a>
+                  </div>
+                </div>
+            </div>
+        </div> 
+        <div class="col-4">
+            <div class="card">
+                <img src="/static/img/02.png" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title text-center">의사용 회원가입</h5>
+                  <p class="card-text">의사용 회원가입은 환자용으로 가입후 관리자에게 요청해주세요.</p>
+                  <div class="d-grid gap-2 mx-auto">
+                        <a href={% url 'common:signup' %} class="btn btn-outline-secondary" role="button">의사용 회원가입</a>
+                  </div>               
+            </div>
+        </div> 
+    </div>
+</div>
+{% endblock %}

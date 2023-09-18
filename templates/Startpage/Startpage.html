@@ -14,7 +14,7 @@
                     <a href={% url 'common:logout' %} class="btn lg btn-outline-secondary" type="button">로그아웃</a>
                     <a href={% url 'common:to_mainpage' %} class="btn lg btn-outline-secondary" role="button">메인 페이지</a>
                 {%else%}
-                    <a href={% url 'common:signup' %} class="btn btn-outline-secondary" role="button">사용자 등록</a>
+                    <a href={% url 'common:select' %} class="btn btn-outline-secondary" role="button">사용자 등록</a>
                     <a href={% url 'common:login' %} class="btn btn-outline-secondary" role="button">로그인</a>
                 {%endif%}
             </div>
