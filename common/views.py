@@ -1,11 +1,11 @@
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
-from common.forms import UserCreationForm
+from common.forms import UserForm
 
 
 def signup(request):
     if request.method == "POST":
-        form = UserCreationForm(request.POST)
+        form = UserForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
@@ -14,14 +14,12 @@ def signup(request):
             login(request, user)  # 로그인
             return redirect('Start:index')
     else:
-        form = UserCreationForm()
+        form = UserForm()
     return render(request, 'common/signup.html', {'form': form})
 
 def to_mainpage(request):
     return redirect('main:index')
 
-def select(request):
-    return render(request,'common/select.html')
-
-
+def check(request):
+    return render(request,'common/check.html')
 
