@@ -1,8 +1,13 @@
 
 import os,natsort
 
-directory_path = f"Data/jong1334"
+username='jong1334'
+directory_path = f"Data/{username}"
 list=os.listdir(directory_path)
-print(list)
-sorted_list=natsort.natsorted(list)
-print(sorted_list)
+txt= open(directory_path+'/'+list[0],'r')
+value = txt.readlines() 
+for i in range(len(value)):
+    value[i]=int(value[i].strip())
+txt.close()
+print(value)
+context = {'value':value}
