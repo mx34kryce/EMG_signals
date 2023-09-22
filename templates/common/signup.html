@@ -24,11 +24,6 @@
             <input type="text" class="form-control" name="email" id="email"
                    value="{{ form.email.value|default_if_none:'' }}">
         </div>
-        <div class="mb-3">
-            <label for="email">인증 코드</label>
-            <input type="text" class="form-control" name="auth_code" id="auth_code"
-                   value="{{ form.auth_code.value|default_if_none:'' }}">
-        </div>
         <button type="submit" class="btn btn-primary">생성하기</button>
     </form>
 </div>

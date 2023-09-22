@@ -12,8 +12,12 @@ def signup(request):
             form.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)  # 사용자 인증
-            login(request, user)  # 로그인
+            user = authenticate(username=username, password=raw_password)
+            if user is not None and user.is_authenticated:
+                login(request, user)
+            else:
+                return render(request, 'common/signup.html', {'form': form})
+             # 로그인
             return redirect('Start:index')
     else:
         form = UserCreationForm()
@@ -39,7 +43,7 @@ def mysocket(request):
         redirect("common:login")
     created_date = time.strftime('%Y-%m-%d-%H-%M-%S')
     # 서버의 IP 주소와 포트 번호 설정
-    server_ip = "192.168.0.72"
+    server_ip = "172.20.10.2"
     server_port = 8080
     # UDP 소켓 생성
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -49,37 +53,42 @@ def mysocket(request):
     print(f"Listening for UDP packets on {server_ip}:{server_port}")
 
     # 데이터 저장 상태
-    save_data = False
     data_list = []
-    while True:
-        # 데이터를 수신
-        data, addr = sock.recvfrom(1024)
-        decoded_data = data.decode('utf-8')
+    count=0 # 루프를 벗어나기 위한 변수 정의
 
-        if decoded_data == "start":
-            save_data = True
-            data_list = []  # 리스트 초기화
-            continue
-        
-        if decoded_data == "finish":
-            save_data = False
-            # 디렉토리를 자동으로 생성하고 측정된 데이터를 파일에 저장
-            directory_path = f"Data/{username}"
-            if not os.path.exists(directory_path):
-                os.makedirs(directory_path)
-            with open(f"Data/{username}/{created_date}.txt", "w") as f:
-                for item in data_list:
-                    f.write(f"{item}\n")
-            print("Check Completed and Data saved.")
-            print("Checking Server stopped.")
-            sock.close()
-            break
+    try:
+        while (True):
+            # 데이터를 수신
+            data, addr = sock.recvfrom(1024)
+            decoded_data = data.decode('utf-8')
+            
 
-        # "start"와 "finish" 사이의 데이터를 data_list에 저장
-        if save_data:
+            if decoded_data == "start":
+                data_list = []  # 리스트 초기화
+                continue
+            elif count>=5:
+                # 디렉토리를 자동으로 생성하고 측정된 데이터를 파일에 저장
+                directory_path = f"Data/{username}"
+                if not os.path.exists(directory_path):
+                    os.makedirs(directory_path)
+                with open(f"Data/{username}/{created_date}.txt", "w") as f:
+                    for item in data_list:
+                        f.write(f"{item}\n")
+                print("Check Completed and Data saved.")
+                print("Checking Server stopped.")
+                sock.close()
+                break
+            elif int(decoded_data)>500:
+                count+=1
+            
             data_list.append(decoded_data)
 
-        print(f"Received data from {addr}: {decoded_data}")
+            print(f"Received data from {addr}: {decoded_data}")
+
+    except KeyboardInterrupt:
+        print("KeyboardInterrupt received. Stopping the check.")
+        sock.close()
+
 
 async def check_async(request):
-    await mysocket(request)  # mysocket 비동기 함수를 await로 호출하여 소켓 작업 수행
+    await mysocket(request)
