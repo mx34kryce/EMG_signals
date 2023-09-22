@@ -61,8 +61,6 @@ def mysocket(request):
             # 데이터를 수신
             data, addr = sock.recvfrom(1024)
             decoded_data = data.decode('utf-8')
-            
-
             if decoded_data == "start":
                 data_list = []  # 리스트 초기화
                 continue
