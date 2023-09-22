@@ -43,7 +43,7 @@ def mysocket(request):
         redirect("common:login")
     created_date = time.strftime('%Y-%m-%d-%H-%M-%S')
     # 서버의 IP 주소와 포트 번호 설정
-    server_ip = "172.20.10.2"
+    server_ip = "http://ec2-15-164-94-66.ap-northeast-2.compute.amazonaws.com"
     server_port = 8080
     # UDP 소켓 생성
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
